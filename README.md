@@ -6,7 +6,6 @@ firmware 1.5.1970, hardware revision 2 (Rev D).
 
 This repository records how the original software works, including limitations and unsuccessful
 approaches. It is a research archive; the maintained implementations live in separate projects.
-There is no CI workflow or release process.
 
 ## Start here
 
@@ -68,16 +67,3 @@ Open `Myo Connect.exe.i64` in a compatible IDA installation. If IDA asks for the
 select your own matching `Myo Connect.exe`. The executable, installer, extracted application
 resources and firmware IDA databases are not included here. The database may retain original
 workspace paths; the database's annotations do not require those paths to exist.
-
-## Related projects and source material
-
-- [MyoFirmware](https://github.com/darksimpson/MyoFirmware): original and patched firmware,
-  patcher sources, decoded binaries and firmware IDA databases.
-- MyoSharp: the C# library and Windows demo developed from this research.
-- MyoEsp32: the ESP32 implementation in the original workspace.
-- The public `myo-bluetooth/myohw.h` header and the pymyo, MyoBridge and
-  MyoIMUGestureController projects were reference inputs; they are not vendored here.
-
-The JSON model data and IDA database derive from third-party software. Their inclusion does not
-assert a redistribution license for Thalmic's firmware, model weights or application. No source
-license has been selected for this archive yet.
