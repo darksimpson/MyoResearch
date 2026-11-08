@@ -1,0 +1,5 @@
+*.i64 -text
+*.bin -text
+*.md text eol=lf
+*.cs text eol=crlf
+*.json text eol=lf

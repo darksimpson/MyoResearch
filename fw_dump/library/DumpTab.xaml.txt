@@ -1,0 +1,57 @@
+Fragments removed from MainWindow.xaml of the MyoSharp demo (commit 57c278d).
+
+Window.Resources entries:
+
+    <sys:String x:Key="DumpTip">A Fletcher16 over two bytes determines both of them modulo 255, so every request yields two bytes. Modulo 255 the values 0x00 and 0xFF are identical, and that is the one thing this cannot tell apart. Three things settle such bytes: the Scan command proves 8-byte blocks erased, so whole erased areas come out exactly; below 0xF000 an update mirrors flash into the spare bank, where offering the armband a write makes it compare rather than program, which settles the byte exactly (this covers the factory calibration, the user settings, the bootloader and classifier slot 0); and anywhere else a reference image can be consulted. Whatever is left is listed by address in the report, with 0x00 assumed. An application dump is also loaded back through the same validator the bootloader uses, so it either proves itself safe to flash or says why not.</sys:String>
+    <sys:String x:Key="DumpReferenceTip">Only consulted for bytes the armband cannot pin down as 0x00 or 0xFF, and only at addresses the file actually defines. Bytes the armband did report are always kept, and the report counts how many of them differ from the reference, so a stock image can be used to resolve a patched build without hiding the patch.</sys:String>
+
+TabItem, which sat last inside the MainTabs TabControl:
+
+          <TabItem Header="Dump" Tag="dump">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+              <StackPanel Margin="4">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock TextWrapping="Wrap" Foreground="Gray" Margin="2" MaxWidth="920"
+                             Text="Reads flash out of the armband with the firmware update commands, which accept any address and give away two bytes per request: no debugger needed, but only about a hundred bytes a second. Opening a session erases the spare flash bank, which is scratch space the armband does not run from, and nothing is ever committed. The factory calibration is the part of a Myo that exists nowhere else, so it is the one worth keeping."/>
+                  <ContentControl Style="{StaticResource HelpIcon}" ToolTip="{StaticResource DumpTip}"/>
+                </StackPanel>
+                <GroupBox Header="What to read">
+                  <WrapPanel>
+                    <CheckBox x:Name="DumpFactoryCheck" Content="Factory calibration, 4 KiB" IsChecked="True" Margin="4,3" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="DumpSettingsCheck" Content="User settings, 4 KiB" IsChecked="True" Margin="4,3" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="DumpSlot0Check" Content="Classifier slot 0" IsChecked="True" Margin="4,3" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="DumpSlot1Check" Content="slot 1" Margin="4,3" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="DumpSlot2Check" Content="slot 2" Margin="4,3" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="DumpSlot3Check" Content="slot 3" Margin="4,3" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="DumpSlot4Check" Content="slot 4" Margin="4,3" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="DumpBootloaderCheck" Content="Bootloader, 40 KiB" Margin="4,3" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="DumpApplicationCheck" Content="Application firmware, 408 KiB (hours)" Margin="4,3" VerticalAlignment="Center"/>
+                  </WrapPanel>
+                </GroupBox>
+                <GroupBox Header="Output">
+                  <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                      <TextBlock Text="Folder" Width="64" VerticalAlignment="Center"/>
+                      <TextBox x:Name="DumpFolderBox" Width="520" VerticalAlignment="Center"/>
+                      <Button Content="Browse..." Click="OnDumpBrowseClick"/>
+                      <Button Content="Open folder" Click="OnDumpOpenFolderClick"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                      <TextBlock Text="Reference" Width="64" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="DumpReferenceText" Width="520" VerticalAlignment="Center" Text="none loaded"/>
+                      <Button Content="Load image..." Click="OnDumpReferenceClick"/>
+                      <Button Content="Clear" Click="OnDumpReferenceClearClick"/>
+                      <ContentControl Style="{StaticResource HelpIcon}" ToolTip="{StaticResource DumpReferenceTip}"/>
+                    </StackPanel>
+                  </StackPanel>
+                </GroupBox>
+                <StackPanel Orientation="Horizontal">
+                  <Button x:Name="DumpStartButton" Content="Start reading" Click="OnDumpStartClick"/>
+                  <Button x:Name="DumpCancelButton" Content="Cancel" Click="OnDumpCancelClick" IsEnabled="False"/>
+                </StackPanel>
+                <ProgressBar x:Name="DumpProgressBar" Minimum="0" Maximum="1" Height="12" Margin="2"/>
+                <TextBlock x:Name="DumpStatusText" TextWrapping="Wrap" Margin="2"/>
+                <TextBlock x:Name="DumpResultText" FontFamily="Consolas" TextWrapping="Wrap" Margin="2"/>
+              </StackPanel>
+            </ScrollViewer>
+          </TabItem>
